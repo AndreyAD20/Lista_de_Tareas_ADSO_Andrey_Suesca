@@ -26,6 +26,14 @@ body {
     min-height: 100vh;
     padding-top: 5rem;
 }
+
+img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    border-radius: 100%;
+}
 @keyframes gradient {
     0% {
         background-position: 0% 50%;
