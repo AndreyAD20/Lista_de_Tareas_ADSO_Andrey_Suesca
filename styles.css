@@ -2,7 +2,7 @@
     --primary-color: #6366f1;
     --primary-hover: #4f46e5;
     --background-color: #f3f4f6;
-    --card-bg: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.95); /* Más transparencia para el fondo */
     --text-color: #1f2937;
     --text-secondary: #6b7280;
     --border-color: #e5e7eb;
@@ -10,116 +10,141 @@
     --success-color: #10b981;
     --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--background-color);
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
     color: var(--text-color);
     display: flex;
     justify-content: center;
     min-height: 100vh;
     padding-top: 5rem;
 }
-
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 .contenedor {
     width: 100%;
-    max-width: 700px; /* Aumentado de 500px */
+    max-width: 700px;
     padding: 0 2rem;
 }
-
 header {
     margin-bottom: 2.5rem;
     text-align: center;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
 }
-
 h1 {
-    font-size: 2.5rem; /* Aumentado */
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--text-color);
     margin-bottom: 0.75rem;
 }
-
 .fecha {
     color: var(--text-secondary);
-    font-size: 1.1rem; /* Aumentado */
+    font-size: 1.1rem;
 }
-
 .entrada-contenedor {
     display: flex;
+    flex-direction: column; /* Cambiado a columna para múltiples inputs */
     gap: 1rem;
     margin-bottom: 2rem;
     background: var(--card-bg);
-    padding: 1rem; /* Aumentado */
+    padding: 1.5rem;
     border-radius: 1.25rem;
     box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
 }
-
-#entrada-tarea {
-    flex: 1;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 1.2rem; /* Aumentado */
+.inputs-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+}
+input[type="text"] {
+    border: 2px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
     outline: none;
     font-family: inherit;
     color: var(--text-color);
+    border-radius: 0.75rem;
+    transition: border-color 0.2s;
+    background: white;
 }
-
+input[type="text"]:focus {
+    border-color: var(--primary-color);
+}
+#entrada-titulo {
+    font-weight: 600;
+}
 #btn-agregar {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    width: 60px; /* Aumentado */
-    height: 60px; /* Aumentado */
+    width: 100%; /* Botón ancho completo */
+    padding: 1rem;
     border-radius: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background-color 0.2s;
+    font-size: 1.1rem;
+    font-weight: 600;
+    gap: 0.5rem;
 }
-
 #btn-agregar svg {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
 }
-
 #btn-agregar:hover {
     background-color: var(--primary-hover);
 }
-
 .estadisticas {
     margin-bottom: 1.5rem;
-    color: var(--text-secondary);
-    font-size: 1.1rem; /* Aumentado */
+    color: white; /* Texto blanco para resaltar sobre el fondo animado */
+    font-size: 1.2rem;
+    font-weight: 500;
     display: flex;
     justify-content: flex-end;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
 #lista-tareas {
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-
 .tarea-item {
     background: var(--card-bg);
-    padding: 1.5rem; /* Aumentado */
+    padding: 1.5rem;
     border-radius: 1rem;
     box-shadow: var(--shadow);
     display: flex;
-    align-items: flex-start; /* Alineación superior para acomodar fechas */
+    align-items: flex-start;
     gap: 1.25rem;
     transition: all 0.2s ease;
     animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
 }
-
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -130,20 +155,18 @@ h1 {
         transform: translateY(0);
     }
 }
-
 .tarea-item.completada {
     opacity: 0.8;
-    background-color: #f9fafb;
+    background-color: rgba(249, 250, 251, 0.9);
 }
-
-.tarea-item.completada .texto-tarea-contenido {
+.tarea-item.completada .titulo-tarea,
+.tarea-item.completada .descripcion-tarea {
     text-decoration: line-through;
     color: var(--text-secondary);
 }
-
 .checkbox-custom {
-    width: 32px; /* Aumentado */
-    height: 32px; /* Aumentado */
+    width: 32px;
+    height: 32px;
     border: 3px solid var(--border-color);
     border-radius: 50%;
     cursor: pointer;
@@ -154,51 +177,59 @@ h1 {
     flex-shrink: 0;
     margin-top: 0.2rem;
 }
-
 .tarea-item.completada .checkbox-custom {
     background-color: var(--success-color);
     border-color: var(--success-color);
 }
-
 .checkbox-custom::after {
     content: '✓';
     color: white;
-    font-size: 20px; /* Aumentado */
+    font-size: 20px;
     display: none;
     font-weight: bold;
 }
-
 .tarea-item.completada .checkbox-custom::after {
     display: block;
 }
-
 .contenido-tarea {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    cursor: pointer; /* Indicar que es clickeable */
 }
-
-.texto-tarea-contenido {
-    font-size: 1.25rem; /* Aumentado */
-    word-break: break-word;
+.contenido-tarea:hover {
+    background-color: rgba(0,0,0,0.02);
+    border-radius: 0.5rem;
+    margin: -0.5rem;
+    padding: 0.5rem;
+}
+.titulo-tarea {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-color);
+    line-height: 1.2;
+}
+.descripcion-tarea {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
     line-height: 1.4;
 }
-
 .fechas-tarea {
     font-size: 0.9rem;
     color: var(--text-secondary);
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-color);
 }
-
 .fecha-creacion, .fecha-finalizacion {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
-
 .btn-eliminar {
     background: none;
     border: none;
@@ -210,17 +241,35 @@ h1 {
     opacity: 0;
     margin-top: -0.5rem;
 }
-
 .btn-eliminar svg {
     width: 24px;
     height: 24px;
 }
-
 .tarea-item:hover .btn-eliminar {
     opacity: 1;
 }
-
 .btn-eliminar:hover {
     background-color: #fee2e2;
     color: var(--danger-color);
+}
+/* Estilos para modo edición */
+.modo-edicion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+.modo-edicion input {
+    width: 100%;
+}
+.btn-guardar {
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    align-self: flex-start;
+    margin-top: 0.5rem;
 }

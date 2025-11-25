@@ -13,23 +13,23 @@
             <h1>Mis Tareas</h1>
             <p class="fecha" id="fecha-actual"></p>
         </header>
-
         <div class="entrada-contenedor">
-            <input type="text" id="entrada-tarea" placeholder="¿Qué necesitas hacer hoy?">
+            <div class="inputs-wrapper">
+                <input type="text" id="entrada-titulo" placeholder="Título de la tarea">
+                <input type="text" id="entrada-descripcion" placeholder="Descripción (opcional)">
+            </div>
             <button id="btn-agregar" aria-label="Agregar tarea">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Agregar Tarea
             </button>
         </div>
-
         <div class="estadisticas">
             <span>Pendientes: <strong id="contador-pendientes">0</strong></span>
         </div>
-
         <ul id="lista-tareas">
             <!-- Las tareas se agregarán aquí dinámicamente -->
         </ul>
     </div>
-
     <script src="index.js"></script>
 </body>
 </html>
