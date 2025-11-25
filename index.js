@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (e.target.closest('.btn-eliminar')) {
             eliminarTarea(id);
-        } else if (e.target.closest('.checkbox-custom') || e.target.closest('.texto-tarea')) {
+        } else if (e.target.closest('.checkbox-custom') || e.target.closest('.contenido-tarea')) {
             alternarTarea(id);
         }
     });
@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const nuevaTarea = {
             id: Date.now(),
             texto: texto,
-            completada: false
+            completada: false,
+            fechaCreacion: new Date().toISOString(),
+            fechaFinalizacion: null
         };
 
         tareas.push(nuevaTarea);
@@ -82,7 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function alternarTarea(id) {
         tareas = tareas.map(tarea => {
             if (tarea.id === id) {
-                return { ...tarea, completada: !tarea.completada };
+                const completada = !tarea.completada;
+                return { 
+                    ...tarea, 
+                    completada: completada,
+                    fechaFinalizacion: completada ? new Date().toISOString() : null
+                };
             }
             return tarea;
         });
@@ -95,6 +102,18 @@ document.addEventListener('DOMContentLoaded', () => {
         contadorPendientes.textContent = pendientes;
     }
 
+    function formatearFechaHora(isoString) {
+        if (!isoString) return '';
+        const fecha = new Date(isoString);
+        return fecha.toLocaleString('es-ES', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
     function renderizarTareas() {
         listaTareas.innerHTML = '';
         
@@ -103,11 +122,20 @@ document.addEventListener('DOMContentLoaded', () => {
             li.className = `tarea-item ${tarea.completada ? 'completada' : ''}`;
             li.dataset.id = tarea.id;
 
+            const fechaCreacionStr = formatearFechaHora(tarea.fechaCreacion);
+            const fechaFinalizacionStr = tarea.fechaFinalizacion ? formatearFechaHora(tarea.fechaFinalizacion) : '';
+
             li.innerHTML = `
                 <div class="checkbox-custom"></div>
-                <span class="texto-tarea">${escaparHTML(tarea.texto)}</span>
+                <div class="contenido-tarea">
+                    <span class="texto-tarea-contenido">${escaparHTML(tarea.texto)}</span>
+                    <div class="fechas-tarea">
+                        <span class="fecha-creacion">📅 Creada: ${fechaCreacionStr}</span>
+                        ${tarea.completada ? `<span class="fecha-finalizacion">✅ Finalizada: ${fechaFinalizacionStr}</span>` : ''}
+                    </div>
+                </div>
                 <button class="btn-eliminar" aria-label="Eliminar tarea">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 </button>
             `;
 
